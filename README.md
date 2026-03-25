@@ -21,6 +21,7 @@ Launch Pad is a unified control panel for your entire dev stack. GitHub, Vercel,
 git clone https://github.com/Rickchise23/launchpad.git
 cd launchpad
 
+# Use Node 20 to match Vercel (`engines` + `.nvmrc`) — e.g. `nvm use`
 # Install dependencies
 npm install
 
