@@ -18,7 +18,7 @@ Launch Pad is a unified control panel for your entire dev stack. GitHub, Vercel,
 
 ```bash
 # Clone the repo
-git clone https://github.com/YOUR_USERNAME/launchpad.git
+git clone https://github.com/Rickchise23/launchpad.git
 cd launchpad
 
 # Install dependencies
