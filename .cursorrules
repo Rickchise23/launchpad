@@ -1,0 +1,149 @@
+# Launch Pad — Cursor Rules
+
+## What This Project Is
+
+Launch Pad is a unified developer cockpit that manages GitHub, Vercel, Supabase, and Claude/Anthropic from one dark-mode UI. It eliminates backend friction for builders who hate terminals. Users authenticate once per service, and the app handles tokens, permissions, env vars, and agent orchestration.
+
+## The Stack
+
+- **Framework:** Next.js 14 with App Router
+- **Language:** TypeScript
+- **Styling:** Tailwind CSS with custom theme (see tailwind.config.js)
+- **Auth (coming):** Clerk — no custom auth code, ever
+- **Billing (coming):** Stripe via Clerk billing integration
+- **Database (coming):** Supabase for user vault, agent memories, sessions
+- **APIs:** GitHub REST, Vercel REST, Supabase PostgREST, Anthropic Messages API
+
+## Architecture Rules
+
+- No custom backend. Use Next.js API routes only.
+- All API keys entered by the user are stored client-side in localStorage (will migrate to encrypted Supabase Vault when auth is added).
+- API calls to third-party services (GitHub, Vercel, Supabase, Anthropic) happen client-side in the prototype. When splitting into production, move them to API routes to keep secrets server-side.
+- Never write custom auth middleware. Clerk handles everything.
+- The `vault` object in state holds all user tokens. Check `vault.github`, `vault.vercel`, `vault.supabase_url`, `vault.supabase_anon`, `vault.supabase_service`, `vault.anthropic`.
+
+## Design System
+
+- **Background:** #09090b
+- **Card background:** rgba(255,255,255,0.02) with 1px border rgba(255,255,255,0.06)
+- **Typography:** DM Sans for UI, JetBrains Mono for code/data
+- **Service colors:**
+  - GitHub: #8b6cf6 (purple)
+  - Vercel: #ffffff (white)
+  - Supabase: #3ecf8e (green)
+  - Claude: #d97750 (amber)
+- **Primary action:** #00e676 (green) — buttons, CTAs, success states
+- **Danger:** #ff5252
+- **Warning:** #ffd740
+- **Info:** #40c4ff
+- **Design vibe:** Robinhood meets Bloomberg terminal. Dark, premium, bright accent buttons. Never generic. No Inter, no purple-on-white gradients, no AI slop.
+
+## Component Structure
+
+Currently the app lives in a single file: `src/components/LaunchPad.tsx` (2,300 lines). When splitting into smaller components, follow this structure:
+
+```
+src/components/
+├── layout/
+│   ├── Sidebar.tsx
+│   ├── Header.tsx
+│   └── Toast.tsx
+├── dashboard/
+│   └── DashboardView.tsx
+├── github/
+│   └── GitHubView.tsx
+├── vercel/
+│   └── VercelView.tsx
+├── supabase/
+│   └── SupabaseView.tsx
+├── claude/
+│   └── ClaudeView.tsx
+├── agent/
+│   └── AgentView.tsx
+├── mcp/
+│   └── MCPView.tsx
+├── settings/
+│   └── SetupDrawer.tsx
+└── ui/
+    ├── PulseDot.tsx
+    ├── Icons.tsx
+    └── ServiceCard.tsx
+```
+
+## Key Patterns
+
+### Vault (Key Storage)
+```typescript
+// Load
+const vault = JSON.parse(localStorage.getItem("launchpad-vault") || "{}");
+// Save
+localStorage.setItem("launchpad-vault", JSON.stringify(vault));
+// Check connection
+const isConnected = (svc: string) => {
+  if (svc === "supabase") return !!(vault.supabase_url && vault.supabase_anon);
+  return !!vault[svc];
+};
+```
+
+### Agent Memory (Persistent)
+```typescript
+// Memories persist in localStorage, grouped by project
+// Key: "launchpad-agent-memories"
+// Format: Array of { id, project, content, type, created, task }
+// Injected into Claude system prompt on each agent task
+```
+
+### API Call Pattern
+```typescript
+// All service APIs follow same pattern:
+const ghFetch = async (endpoint: string, options = {}) => {
+  const res = await fetch(`https://api.github.com${endpoint}`, {
+    ...options,
+    headers: { Authorization: `Bearer ${vault.github}`, ...options.headers },
+  });
+  if (!res.ok) throw new Error(/* parse error */);
+  return res.json();
+};
+```
+
+### Toast Notifications
+```typescript
+showToast("Message here", "success"); // success | error | info | warning
+```
+
+## What's Working
+
+All four integrations are wired to real APIs:
+- GitHub: repos, branches, PRs, create/delete repos
+- Vercel: projects, deployments, env vars (CRUD), domains, deploy trigger
+- Supabase: tables, data browser, SQL console, storage buckets
+- Claude: live chat (Messages API), model selector, prompt vault, usage tracking
+- Agent Bay: task launcher with memory layer, sessions audit
+- MCP Config Generator: Claude Code + Cursor formats
+- Dashboard: real-time health, cost cockpit, alerts
+- Settings: vault with show/hide, add/remove keys
+
+## What's Coming Next (Don't Build Yet)
+
+- Clerk auth integration (Phase B)
+- Stripe billing (Phase B)
+- Migrate localStorage vault to Supabase Vault (Phase B)
+- Landing page (Phase C)
+- PWA / mobile (Phase E)
+
+## Code Style
+
+- Functional components with hooks only. No class components.
+- Inline styles for dynamic values (service-specific colors). Tailwind for layout/spacing.
+- Animations: use CSS keyframes defined in globals.css, not JS animation libraries.
+- Keep toast notifications for all user-facing actions.
+- Every panel has three states: disconnected (show connect CTA), loading (spinner), connected (show data).
+- Error states always offer Retry + Update Token options.
+
+## Important Context
+
+- The plan.md in the project root has the full roadmap, business model, and launch plan.
+- This app was prototyped in a Claude chat session and is being migrated to a real Next.js project.
+- The founder is an ops guy, not a developer. Keep things simple, avoid unnecessary abstractions, and prefer working code over perfect architecture.
+- Target launch: 4 weeks from now on ProductHunt.
+- Pricing: Free (1 project, read-only) + Pro ($9.99/mo, everything).
