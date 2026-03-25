@@ -43,13 +43,11 @@ Open [http://localhost:3000](http://localhost:3000).
 
 ## Security note
 
-`npm audit` may still report high-severity issues in `next` and `eslint-config-next` on the 14.x line; clearing them typically requires upgrading to **Next.js 15+** (and aligned ESLint config). Plan that upgrade when you are ready to test the app on the new major version.
-
-This prototype stores service tokens in **browser localStorage** and calls third-party APIs from the client. Treat that as fine for personal use; for a public product, move secrets and requests server-side (see project roadmap).
+Dependencies are kept on current **Next.js 15** patch releases so `npm audit` stays clean. This prototype still stores service tokens in **browser localStorage** and calls third-party APIs from the client—fine for personal use; for a public product, move secrets and requests server-side (see project roadmap).
 
 ## Tech Stack
 
-- **Next.js 14** (App Router)
+- **Next.js 15** (App Router)
 - **Tailwind CSS**
 - **Clerk** (Auth)
 - **Stripe** (Billing)

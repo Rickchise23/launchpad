@@ -6,7 +6,7 @@ Launch Pad is a unified developer cockpit that manages GitHub, Vercel, Supabase,
 
 ## The Stack
 
-- **Framework:** Next.js 14 with App Router
+- **Framework:** Next.js 15 with App Router
 - **Language:** TypeScript
 - **Styling:** Tailwind CSS with custom theme (see tailwind.config.js)
 - **Auth (coming):** Clerk — no custom auth code, ever

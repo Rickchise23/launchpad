@@ -145,7 +145,7 @@ The following has been built as a fully functional 2,300-line React prototype wi
 
 Take the prototype and stand it up as a real deployable application.
 
-- [ ] Scaffold Next.js 14 project with App Router
+- [ ] Scaffold Next.js 15 project with App Router
 - [ ] Install dependencies: tailwindcss, lucide-react
 - [ ] Split the 2,300-line prototype into proper component files
 - [ ] Move API calls to Next.js API routes (keeps secrets server-side)
@@ -275,7 +275,7 @@ Build a single-page marketing site. This is what people see before they sign up.
 
 | Layer | Choice | Why |
 |---|---|---|
-| Frontend | Next.js 14 (App Router) + React | Same code for web + future Tauri desktop |
+| Frontend | Next.js 15 (App Router) + React | Same code for web + future Tauri desktop |
 | Styling | Tailwind CSS | Fast, consistent, responsive |
 | Auth | Clerk | Zero custom auth. Login, sessions, orgs, billing hooks |
 | Payments | Stripe via Clerk billing | One integration handles both |
