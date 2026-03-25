@@ -1,9 +1,38 @@
 import type { Metadata } from 'next';
 import './globals.css';
+import { getSiteUrl } from '@/lib/siteUrl';
+
+const siteUrl = getSiteUrl();
+const title = 'Launch Pad';
+const description =
+  'Unified control panel for GitHub, Vercel, Supabase, and Claude—repos, deploys, env vars, data, chat, agent tasks, and MCP configs in one dark UI.';
 
 export const metadata: Metadata = {
-  title: 'Launch Pad',
-  description: 'The cockpit for builders who hate backend friction.',
+  metadataBase: new URL(siteUrl),
+  title: {
+    default: title,
+    template: `%s · ${title}`,
+  },
+  description,
+  applicationName: title,
+  authors: [{ name: 'Rick Griffith' }],
+  openGraph: {
+    type: 'website',
+    locale: 'en_US',
+    url: siteUrl,
+    siteName: title,
+    title,
+    description,
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title,
+    description,
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 export default function RootLayout({

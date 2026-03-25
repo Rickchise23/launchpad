@@ -33,6 +33,19 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000).
 
+## Deploy (Vercel)
+
+1. Push this repo to GitHub (see clone URL above).
+2. In [Vercel](https://vercel.com), **Add New Project** and import the repository. Framework defaults are correct for Next.js.
+3. Optional: set **Environment variable** `NEXT_PUBLIC_SITE_URL` to your production URL (e.g. `https://launchpad.vercel.app`) so Open Graph and `sitemap.xml` use the right origin. Vercel also sets `VERCEL_URL`, which is used as a fallback at build time.
+4. Clerk, Stripe, and Supabase keys from `.env.example` are only needed when those features are wired into the app.
+
+## Security note
+
+`npm audit` may still report high-severity issues in `next` and `eslint-config-next` on the 14.x line; clearing them typically requires upgrading to **Next.js 15+** (and aligned ESLint config). Plan that upgrade when you are ready to test the app on the new major version.
+
+This prototype stores service tokens in **browser localStorage** and calls third-party APIs from the client. Treat that as fine for personal use; for a public product, move secrets and requests server-side (see project roadmap).
+
 ## Tech Stack
 
 - **Next.js 14** (App Router)
@@ -43,4 +56,4 @@ Open [http://localhost:3000](http://localhost:3000).
 
 ## License
 
-MIT
+[MIT](LICENSE)
