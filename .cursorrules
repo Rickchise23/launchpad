@@ -9,7 +9,7 @@ Launch Pad is a unified developer cockpit that manages GitHub, Vercel, Supabase,
 - **Framework:** Next.js 15 with App Router
 - **Language:** TypeScript
 - **Styling:** Tailwind CSS with custom theme (see tailwind.config.js)
-- **Auth (coming):** Clerk — no custom auth code, ever
+- **Auth:** Clerk — `middleware.ts` gates `/app`; marketing routes public. No custom session cookies.
 - **Billing (coming):** Stripe via Clerk billing integration
 - **Database (coming):** Supabase for user vault, agent memories, sessions
 - **APIs:** GitHub REST, Vercel REST, Supabase PostgREST, Anthropic Messages API
@@ -123,13 +123,12 @@ All four integrations are wired to real APIs:
 - MCP Config Generator: Claude Code + Cursor formats
 - Dashboard: real-time health, cost cockpit, alerts
 - Settings: vault with show/hide, add/remove keys
+- Marketing: `/` landing + `/pricing`; Clerk sign-in/up; dashboard at `/app` (middleware-gated when Clerk env is set)
 
 ## What's Coming Next (Don't Build Yet)
 
-- Clerk auth integration (Phase B)
-- Stripe billing (Phase B)
+- Stripe + Clerk Billing enforcement (Pro gate in `/app`)
 - Migrate localStorage vault to Supabase Vault (Phase B)
-- Landing page (Phase C)
 - PWA / mobile (Phase E)
 
 ## Code Style

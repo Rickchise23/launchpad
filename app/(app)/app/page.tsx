@@ -2,6 +2,6 @@
 
 import LaunchPad from '@/components/LaunchPad';
 
-export default function Home() {
+export default function DashboardPage() {
   return <LaunchPad />;
 }

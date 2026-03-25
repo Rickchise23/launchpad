@@ -1,6 +1,14 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import { getSiteUrl } from '@/lib/siteUrl';
+import { ClerkAppProvider } from '@/components/providers/ClerkAppProvider';
+
+const authDisabled =
+  process.env.LAUNCHPAD_AUTH_DISABLED === '1' ||
+  process.env.LAUNCHPAD_AUTH_DISABLED === 'true';
+
+const noClerkKey = !process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY?.trim();
+const skipClerk = authDisabled || noClerkKey;
 
 const siteUrl = getSiteUrl();
 const title = 'Launch Pad';
@@ -42,7 +50,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="antialiased">{children}</body>
+      <body className="antialiased">
+        {skipClerk ? children : <ClerkAppProvider>{children}</ClerkAppProvider>}
+      </body>
     </html>
   );
 }
