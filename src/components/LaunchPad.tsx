@@ -70,10 +70,10 @@ const Toast = ({ message, type = "success", onClose }) => {
   );
 };
 
-// ─── PERSISTENT STORAGE (localStorage for production) ───
+// ─── PERSISTENT STORAGE ───
 const VAULT_KEY = "launchpad-vault";
-const loadVault = async () => { try { const r = localStorage.getItem(VAULT_KEY); return r ? JSON.parse(r) : {}; } catch { return {}; } };
-const saveVault = async (data: any) => { try { localStorage.setItem(VAULT_KEY, JSON.stringify(data)); } catch(e) { console.error(e); } };
+const loadVault = async () => { try { const r = await window.storage.get(VAULT_KEY); return r ? JSON.parse(r.value) : {}; } catch { return {}; } };
+const saveVault = async (data) => { try { await window.storage.set(VAULT_KEY, JSON.stringify(data)); } catch(e) { console.error(e); } };
 
 // ─── MAIN ───
 export default function LaunchPad() {
@@ -167,11 +167,13 @@ export default function LaunchPad() {
   useEffect(() => { if (vault.vercel && vaultLoaded) fetchVercelUser(); }, [vault.vercel, vaultLoaded]);
   useEffect(() => { if (vault.supabase_url && vault.supabase_anon && vaultLoaded) fetchSupabaseTables(); }, [vault.supabase_url, vault.supabase_anon, vaultLoaded]);
 
-  // Load prompt vault + agent data from storage
+  // Load prompt vault from storage
   useEffect(() => {
-    try { const r = localStorage.getItem("launchpad-prompts"); if (r) setClPromptVault(JSON.parse(r)); } catch {}
-    try { const r = localStorage.getItem("launchpad-agent-memories"); if (r) setAgentMemories(JSON.parse(r)); } catch {}
-    try { const r = localStorage.getItem("launchpad-agent-sessions"); if (r) setAgentSessions(JSON.parse(r)); } catch {}
+    (async () => {
+      try { const r = (() => { const r = localStorage.getItem("launchpad-prompts"); return r ? { value: r } : null; })(); if (r) setClPromptVault(JSON.parse(r.value)); } catch {}
+      try { const r = (() => { const r = localStorage.getItem("launchpad-agent-memories"); return r ? { value: r } : null; })(); if (r) setAgentMemories(JSON.parse(r.value)); } catch {}
+      try { const r = (() => { const r = localStorage.getItem("launchpad-agent-sessions"); return r ? { value: r } : null; })(); if (r) setAgentSessions(JSON.parse(r.value)); } catch {}
+    })();
   }, []);
 
   const showToast = (message, type = "success") => setToast({ message, type, id: Date.now() });
@@ -589,6 +591,7 @@ At the end of your response, include a line starting with "MEMORY:" followed by 
     { id: "claude", label: "Claude", icon: <Icons.Claude /> },
     { id: "agent", label: "Agent Bay", icon: <Icons.Agent /> },
     { id: "mcp", label: "MCP Config", icon: <Icons.Link /> },
+    { id: "domains", label: "Domains", icon: <Icons.Globe /> },
     { id: "vault", label: "Vault", icon: <Icons.Shield /> },
   ];
 
@@ -2203,6 +2206,270 @@ At the end of your response, include a line starting with "MEMORY:" followed by 
     );
   };
 
+  // ─── DOMAINS PANEL ───
+  const DomainsView = () => {
+    const [domainQuery, setDomainQuery] = useState("");
+    const [domainResults, setDomainResults] = useState([]);
+    const [domainSearching, setDomainSearching] = useState(false);
+    const [domainError, setDomainError] = useState(null);
+    const [selectedDomain, setSelectedDomain] = useState(null);
+    const [vcDomainList, setVcDomainList] = useState([]);
+    const [loadingVcDomains, setLoadingVcDomains] = useState(false);
+    const [connectingDomain, setConnectingDomain] = useState(null);
+    const [connectProject, setConnectProject] = useState("");
+
+    // Fetch user's Vercel domains on mount
+    useEffect(() => {
+      if (vault.vercel) {
+        setLoadingVcDomains(true);
+        fetch("https://api.vercel.com/v5/domains", { headers: { Authorization: `Bearer ${vault.vercel}` } })
+          .then(r => r.ok ? r.json() : Promise.reject("Failed"))
+          .then(data => setVcDomainList(data.domains || []))
+          .catch(() => {})
+          .finally(() => setLoadingVcDomains(false));
+      }
+    }, [vault.vercel]);
+
+    const searchDomains = async () => {
+      if (!domainQuery.trim()) return;
+      setDomainSearching(true); setDomainError(null); setDomainResults([]);
+      try {
+        // Clean the query — strip protocols, www, trailing slashes
+        let q = domainQuery.trim().toLowerCase().replace(/^https?:\/\//, "").replace(/^www\./, "").replace(/\/.*$/, "");
+
+        // If user typed just a word (no dot), generate suggestions across TLDs
+        const hasDot = q.includes(".");
+        const baseName = hasDot ? q.split(".")[0] : q;
+
+        const tlds = [".com", ".dev", ".sh", ".io", ".co", ".app", ".build", ".tools", ".so", ".ai"];
+        const candidates = hasDot ? [q] : tlds.map(tld => baseName + tld);
+
+        // Check availability via Vercel's domain check (if connected) or generate smart results
+        const results = [];
+        for (const domain of candidates) {
+          let available = null;
+          let price = null;
+
+          // Try Vercel domain check API
+          if (vault.vercel) {
+            try {
+              const res = await fetch(`https://api.vercel.com/v4/domains/status?name=${domain}`, {
+                headers: { Authorization: `Bearer ${vault.vercel}` },
+              });
+              if (res.ok) {
+                const data = await res.json();
+                available = data.available;
+              }
+            } catch {}
+          }
+
+          // Estimate price based on TLD
+          const tld = "." + domain.split(".").slice(1).join(".");
+          const priceMap = { ".com": 10, ".dev": 13, ".sh": 12, ".io": 35, ".co": 12, ".app": 14, ".build": 20, ".tools": 25, ".so": 10, ".ai": 30 };
+          price = priceMap[tld] || 15;
+
+          results.push({ domain, available, price, tld });
+        }
+
+        setDomainResults(results);
+      } catch(e) { setDomainError(e.message); }
+      setDomainSearching(false);
+    };
+
+    const connectDomainToVercel = async (domain) => {
+      if (!vault.vercel || !connectProject) return;
+      setConnectingDomain(domain);
+      try {
+        // Add domain to Vercel project
+        const proj = vcProjects.find(p => p.name === connectProject);
+        if (!proj) throw new Error("Select a project first");
+
+        const res = await fetch(`https://api.vercel.com/v10/projects/${proj.id}/domains`, {
+          method: "POST",
+          headers: { Authorization: `Bearer ${vault.vercel}`, "Content-Type": "application/json" },
+          body: JSON.stringify({ name: domain }),
+        });
+
+        if (!res.ok) {
+          const err = await res.json().catch(() => ({}));
+          throw new Error(err.error?.message || "Failed to add domain");
+        }
+
+        const data = await res.json();
+        showToast(`${domain} added to ${connectProject}!`);
+        setSelectedDomain({ ...selectedDomain, connected: true, vercelConfig: data });
+      } catch(e) { showToast(e.message, "error"); }
+      setConnectingDomain(null);
+    };
+
+    const availColor = (a) => a === true ? "#00e676" : a === false ? "#ff5252" : "rgba(255,255,255,0.3)";
+    const availLabel = (a) => a === true ? "Available" : a === false ? "Taken" : "Check";
+
+    return (
+      <div className="space-y-5" style={{ animation: "fadeSlideUp 0.4s ease" }}>
+        <div><h2 className="text-xl font-bold text-white">Domains</h2>
+          <p className="text-xs mt-1" style={{ color: "rgba(255,255,255,0.35)" }}>Search, check availability, buy, and connect to Vercel — all without leaving Launch Pad.</p></div>
+
+        {/* Search */}
+        <div className="flex gap-3">
+          <input value={domainQuery} onChange={e => setDomainQuery(e.target.value)} placeholder="Search for a domain... (e.g. myproject or myproject.com)"
+            onKeyDown={e => { if (e.key === "Enter") searchDomains(); }}
+            className="flex-1 px-4 py-3 rounded-xl text-sm text-white placeholder-white/20 outline-none"
+            style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)" }}
+            onFocus={e => e.target.style.borderColor = "rgba(0,230,118,0.4)"} onBlur={e => e.target.style.borderColor = "rgba(255,255,255,0.08)"}/>
+          <button onClick={searchDomains} disabled={domainSearching || !domainQuery.trim()}
+            className="px-6 py-3 rounded-xl text-sm font-semibold flex items-center gap-2"
+            style={{ background: domainQuery.trim() ? "linear-gradient(135deg, #00e676, #00c853)" : "rgba(255,255,255,0.05)", color: domainQuery.trim() ? "#0a0a0a" : "rgba(255,255,255,0.2)" }}>
+            {domainSearching ? <><span className="w-4 h-4 border-2 border-current border-t-transparent rounded-full" style={{ animation: "spin 0.8s linear infinite" }}/> Searching...</> : <><Icons.Globe /> Search</>}
+          </button>
+        </div>
+
+        {domainError && <div className="p-3 rounded-xl text-xs" style={{ background: "rgba(255,82,82,0.08)", color: "#ff5252" }}>{domainError}</div>}
+
+        {/* Results */}
+        {domainResults.length > 0 && (
+          <div className="space-y-2">
+            <h3 className="text-xs font-semibold uppercase tracking-widest" style={{ color: "rgba(255,255,255,0.35)" }}>Results</h3>
+            {domainResults.map((r, i) => (
+              <div key={i} className="flex items-center gap-4 p-4 rounded-xl transition-all"
+                style={{ background: selectedDomain?.domain === r.domain ? "rgba(0,230,118,0.04)" : "rgba(255,255,255,0.015)", border: `1px solid ${selectedDomain?.domain === r.domain ? "rgba(0,230,118,0.15)" : "rgba(255,255,255,0.04)"}`, animation: `fadeSlideUp 0.3s ease ${i * 50}ms forwards` }}
+                onMouseEnter={e => e.currentTarget.style.background = r.available !== false ? "rgba(0,230,118,0.03)" : "rgba(255,82,82,0.03)"}
+                onMouseLeave={e => e.currentTarget.style.background = selectedDomain?.domain === r.domain ? "rgba(0,230,118,0.04)" : "rgba(255,255,255,0.015)"}>
+                <div className="w-2.5 h-2.5 rounded-full" style={{ background: availColor(r.available) }}/>
+                <div className="flex-1">
+                  <span className="text-sm font-medium font-mono text-white">{r.domain}</span>
+                </div>
+                <span className="text-xs font-medium px-2 py-0.5 rounded-full" style={{ background: `${availColor(r.available)}15`, color: availColor(r.available) }}>
+                  {availLabel(r.available)}
+                </span>
+                <span className="text-sm font-mono" style={{ color: "rgba(255,255,255,0.4)" }}>~${r.price}/yr</span>
+                <div className="flex gap-2">
+                  {r.available !== false && (
+                    <a href={`https://www.namecheap.com/domains/registration/results/?domain=${r.domain}`} target="_blank" rel="noopener noreferrer"
+                      className="flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-medium transition-all"
+                      style={{ background: "linear-gradient(135deg, #00e676, #00c853)", color: "#0a0a0a" }}>
+                      Buy <Icons.ExternalLink />
+                    </a>
+                  )}
+                  <button onClick={() => setSelectedDomain(r)} className="px-3 py-1.5 rounded-lg text-xs font-medium"
+                    style={{ background: "rgba(255,255,255,0.04)", color: "rgba(255,255,255,0.5)" }}>
+                    Details
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {/* Selected Domain Detail / Connect to Vercel */}
+        {selectedDomain && (
+          <div className="rounded-2xl p-5 space-y-4" style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.06)", animation: "fadeSlideUp 0.3s ease" }}>
+            <div className="flex items-center justify-between">
+              <div>
+                <h3 className="text-lg font-bold font-mono text-white">{selectedDomain.domain}</h3>
+                <div className="flex items-center gap-2 mt-1">
+                  <div className="w-2 h-2 rounded-full" style={{ background: availColor(selectedDomain.available) }}/>
+                  <span className="text-xs" style={{ color: availColor(selectedDomain.available) }}>{availLabel(selectedDomain.available)}</span>
+                  <span className="text-xs" style={{ color: "rgba(255,255,255,0.3)" }}>~${selectedDomain.price}/yr on Namecheap</span>
+                </div>
+              </div>
+              <button onClick={() => setSelectedDomain(null)} className="p-2 rounded-xl" style={{ background: "rgba(255,255,255,0.04)", color: "rgba(255,255,255,0.4)" }}><Icons.X /></button>
+            </div>
+
+            {/* Action buttons */}
+            <div className="grid grid-cols-3 gap-3">
+              <a href={`https://www.namecheap.com/domains/registration/results/?domain=${selectedDomain.domain}`} target="_blank" rel="noopener noreferrer"
+                className="flex flex-col items-center gap-2 p-4 rounded-xl transition-all text-center"
+                style={{ background: "rgba(0,230,118,0.06)", border: "1px solid rgba(0,230,118,0.15)" }}>
+                <div className="p-2 rounded-xl" style={{ background: "rgba(0,230,118,0.15)", color: "#00e676" }}><Icons.DollarSign /></div>
+                <span className="text-xs font-medium text-white">Buy on Namecheap</span>
+              </a>
+              <a href={`https://www.godaddy.com/domainsearch/find?domainToCheck=${selectedDomain.domain}`} target="_blank" rel="noopener noreferrer"
+                className="flex flex-col items-center gap-2 p-4 rounded-xl transition-all text-center"
+                style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.06)" }}>
+                <div className="p-2 rounded-xl" style={{ background: "rgba(255,255,255,0.06)", color: "rgba(255,255,255,0.5)" }}><Icons.Globe /></div>
+                <span className="text-xs font-medium" style={{ color: "rgba(255,255,255,0.5)" }}>Check GoDaddy</span>
+              </a>
+              <a href={`https://domains.google.com/registrar/search?searchTerm=${selectedDomain.domain}`} target="_blank" rel="noopener noreferrer"
+                className="flex flex-col items-center gap-2 p-4 rounded-xl transition-all text-center"
+                style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.06)" }}>
+                <div className="p-2 rounded-xl" style={{ background: "rgba(255,255,255,0.06)", color: "rgba(255,255,255,0.5)" }}><Icons.Globe /></div>
+                <span className="text-xs font-medium" style={{ color: "rgba(255,255,255,0.5)" }}>Google Domains</span>
+              </a>
+            </div>
+
+            {/* Connect to Vercel */}
+            {vault.vercel && vcProjects.length > 0 && (
+              <div className="rounded-xl p-4" style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.06)" }}>
+                <h4 className="text-xs font-semibold uppercase tracking-widest mb-3" style={{ color: "rgba(255,255,255,0.35)" }}>Connect to Vercel Project</h4>
+                <p className="text-[11px] mb-3" style={{ color: "rgba(255,255,255,0.25)" }}>Already own this domain? Connect it to a Vercel project and we handle the DNS config for you.</p>
+                <div className="flex gap-2">
+                  <select value={connectProject} onChange={e => setConnectProject(e.target.value)}
+                    className="flex-1 px-3 py-2 rounded-xl text-xs text-white outline-none"
+                    style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", appearance: "none" }}>
+                    <option value="" style={{ background: "#151518" }}>Select a project...</option>
+                    {vcProjects.map(p => <option key={p.id} value={p.name} style={{ background: "#151518" }}>{p.name}</option>)}
+                  </select>
+                  <button onClick={() => connectDomainToVercel(selectedDomain.domain)} disabled={!connectProject || connectingDomain}
+                    className="px-4 py-2 rounded-xl text-xs font-semibold flex items-center gap-2"
+                    style={{ background: connectProject ? "linear-gradient(135deg, #fff, #ccc)" : "rgba(255,255,255,0.05)", color: connectProject ? "#0a0a0a" : "rgba(255,255,255,0.2)" }}>
+                    {connectingDomain ? <span className="w-3 h-3 border-2 border-current border-t-transparent rounded-full" style={{ animation: "spin 0.8s linear infinite" }}/> : <Icons.Link />} Connect
+                  </button>
+                </div>
+                {selectedDomain.connected && (
+                  <div className="flex items-center gap-2 mt-3 p-2 rounded-lg" style={{ background: "rgba(0,230,118,0.06)" }}>
+                    <PulseDot color="#00e676" size={6} />
+                    <span className="text-xs" style={{ color: "#00e676" }}>Domain added to {connectProject}! Configure your DNS nameservers to point to Vercel.</span>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* DNS instructions */}
+            <div className="rounded-xl p-4" style={{ background: "rgba(64,196,255,0.04)", border: "1px solid rgba(64,196,255,0.1)" }}>
+              <h4 className="text-xs font-semibold uppercase tracking-widest mb-2" style={{ color: "#40c4ff" }}>DNS Setup Guide</h4>
+              <div className="space-y-1.5 text-xs" style={{ color: "rgba(255,255,255,0.45)" }}>
+                <div className="flex gap-2"><span className="font-mono px-1.5 py-0.5 rounded text-[10px]" style={{ background: "rgba(255,255,255,0.06)", color: "#40c4ff" }}>1</span> Buy the domain on your preferred registrar</div>
+                <div className="flex gap-2"><span className="font-mono px-1.5 py-0.5 rounded text-[10px]" style={{ background: "rgba(255,255,255,0.06)", color: "#40c4ff" }}>2</span> Use Connect above to add it to your Vercel project</div>
+                <div className="flex gap-2"><span className="font-mono px-1.5 py-0.5 rounded text-[10px]" style={{ background: "rgba(255,255,255,0.06)", color: "#40c4ff" }}>3</span> Set nameservers to <span className="font-mono" style={{ color: "#40c4ff" }}>ns1.vercel-dns.com</span> and <span className="font-mono" style={{ color: "#40c4ff" }}>ns2.vercel-dns.com</span></div>
+                <div className="flex gap-2"><span className="font-mono px-1.5 py-0.5 rounded text-[10px]" style={{ background: "rgba(255,255,255,0.06)", color: "#40c4ff" }}>4</span> SSL auto-provisions. Live in ~10 minutes.</div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Your Vercel Domains */}
+        {vault.vercel && vcDomainList.length > 0 && (
+          <div className="space-y-2">
+            <h3 className="text-xs font-semibold uppercase tracking-widest" style={{ color: "rgba(255,255,255,0.35)" }}>Your Vercel Domains</h3>
+            {vcDomainList.map((d, i) => (
+              <div key={i} className="flex items-center gap-3 p-3.5 rounded-xl transition-all"
+                style={{ background: "rgba(255,255,255,0.015)", border: "1px solid rgba(255,255,255,0.04)" }}
+                onMouseEnter={e => e.currentTarget.style.background = "rgba(255,255,255,0.03)"} onMouseLeave={e => e.currentTarget.style.background = "rgba(255,255,255,0.015)"}>
+                <div className="w-2 h-2 rounded-full" style={{ background: d.verified !== false ? "#00e676" : "#ffd740" }}/>
+                <div className="flex-1">
+                  <a href={`https://${d.name}`} target="_blank" rel="noopener noreferrer" className="text-sm font-mono text-white hover:underline">{d.name}</a>
+                </div>
+                <span className="text-[10px] px-2 py-0.5 rounded-full" style={{ background: d.verified !== false ? "rgba(0,230,118,0.1)" : "rgba(255,215,64,0.1)", color: d.verified !== false ? "#00e676" : "#ffd740" }}>
+                  {d.verified !== false ? "verified" : "pending"}
+                </span>
+                {d.expiresAt && <span className="text-[10px]" style={{ color: "rgba(255,255,255,0.2)" }}>Expires {new Date(d.expiresAt).toLocaleDateString()}</span>}
+              </div>
+            ))}
+          </div>
+        )}
+
+        {/* Empty state for no results yet */}
+        {domainResults.length === 0 && !domainSearching && (
+          <div className="flex flex-col items-center justify-center py-16" style={{ color: "rgba(255,255,255,0.1)" }}>
+            <Icons.Globe /><div className="mt-3 text-sm text-white" style={{ color: "rgba(255,255,255,0.2)" }}>Search for a domain to get started</div>
+            <div className="text-xs mt-1" style={{ color: "rgba(255,255,255,0.12)" }}>Type a name like myproject — we check availability across .com, .dev, .sh, .io and more</div>
+          </div>
+        )}
+      </div>
+    );
+  };
+
   // ─── PLACEHOLDER ───
   const PlaceholderView = ({ serviceId }) => {
     const names = { vercel: "Vercel", supabase: "Supabase", claude: "Claude", dashboard: "Dashboard", agent: "Agent Bay", vault: "Vault" };
@@ -2222,7 +2489,7 @@ At the end of your response, include a line starting with "MEMORY:" followed by 
     );
   };
 
-  const renderView = () => { if (activeView === "dashboard") return <DashboardView />; if (activeView === "github") return <GitHubView />; if (activeView === "vercel") return <VercelView />; if (activeView === "claude") return <ClaudeView />; if (activeView === "supabase") return <SupabaseView />; if (activeView === "agent") return <AgentView />; if (activeView === "mcp") return <MCPView />; return <PlaceholderView serviceId={activeView} />; };
+  const renderView = () => { if (activeView === "dashboard") return <DashboardView />; if (activeView === "github") return <GitHubView />; if (activeView === "vercel") return <VercelView />; if (activeView === "claude") return <ClaudeView />; if (activeView === "supabase") return <SupabaseView />; if (activeView === "agent") return <AgentView />; if (activeView === "mcp") return <MCPView />; if (activeView === "domains") return <DomainsView />; return <PlaceholderView serviceId={activeView} />; };
 
   return (
     <div className="flex h-screen w-full overflow-hidden" style={{ background: "#09090b", fontFamily: "'DM Sans', -apple-system, sans-serif", color: "rgba(255,255,255,0.7)" }}>

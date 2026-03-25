@@ -13,6 +13,18 @@ Launch Pad is a unified control panel for your entire dev stack. GitHub, Vercel,
 - **Claude:** Live chat, prompt vault, model selector, cost tracking
 - **Agent Bay:** Launch AI agent tasks with persistent memory
 - **MCP Generator:** One-click configs for Claude Code and Cursor
+- **Domains:** Search availability across common TLDs (Vercel Domains API), compare registrars, connect a domain to a Vercel project in one click, and see domains already on your Vercel account
+
+## Domains panel
+
+Requires a **Vercel token** in Vault (same as the Vercel panel).
+
+- **Search** — checks availability via `GET /v4/domains/status?name=` across `.com`, `.dev`, `.sh`, `.io`, `.co`, `.app`, `.build`, `.tools`, `.so`, `.ai`
+- **Buy links** — deep-links to Namecheap (and detail panel links for GoDaddy / Google Domains flows)
+- **Connect to Vercel** — pick a project, then `POST /v10/projects/{id}/domains` to attach the domain
+- **Your Vercel domains** — `GET /v5/domains` with verification status
+
+DNS: point nameservers at Vercel (`ns1.vercel-dns.com` / `ns2.vercel-dns.com`); SSL is provisioned automatically once DNS is correct.
 
 ## Getting Started
 

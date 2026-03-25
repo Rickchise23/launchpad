@@ -115,7 +115,8 @@ showToast("Message here", "success"); // success | error | info | warning
 
 All four integrations are wired to real APIs:
 - GitHub: repos, branches, PRs, create/delete repos
-- Vercel: projects, deployments, env vars (CRUD), domains, deploy trigger
+- Vercel: projects, deployments, env vars (CRUD), project domains, deploy trigger
+- Domains panel: TLD search (Vercel status API), registrar links, connect domain to project, account domain list
 - Supabase: tables, data browser, SQL console, storage buckets
 - Claude: live chat (Messages API), model selector, prompt vault, usage tracking
 - Agent Bay: task launcher with memory layer, sessions audit
