@@ -11,10 +11,10 @@ Launch Pad is a unified control panel for your entire dev stack. GitHub, Vercel,
 
 | Path | Purpose |
 |------|---------|
-| `/` | Public marketing landing (CTA → sign up or open app) |
-| `/pricing` | Pricing + Stripe/Clerk notes |
-| `/sign-in`, `/sign-up` | [Clerk](https://clerk.com) auth (dark-themed) |
-| `/app` | **Dashboard** — full `LaunchPad` UI (protected when Clerk is configured) |
+| `/` | **Marketing landing** (full-page Claude build) **or** signed-in **Launch Pad** — see `HomeGate` + `HomeAuthenticated` |
+| `/pricing` | Short pricing page (optional; landing also has `#pricing`) |
+| `/sign-in`, `/sign-up` | [Clerk](https://clerk.com) auth (dark-themed); CTAs use `/sign-up` |
+| `/app` | **Dashboard** — same `LaunchPad` UI (still protected by middleware when Clerk is on) |
 
 ### Auth gating (Clerk)
 
@@ -61,9 +61,9 @@ cp .env.example .env.local
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) — you’ll see the **landing**; the cockpit is at [http://localhost:3000/app](http://localhost:3000/app).
+Open [http://localhost:3000](http://localhost:3000) — with Clerk keys, signed-out users see the **marketing landing**; after sign-up they land in the cockpit on **`/`**. [http://localhost:3000/app](http://localhost:3000/app) is the same dashboard (direct link).
 
-Without Clerk keys in `.env.local`, the dashboard is **not** behind login (same as CI). Add Clerk keys to test the real flow.
+Without Clerk keys in `.env.local`, `/` shows the landing only (no `useUser`); use **`/app`** to open the cockpit.
 
 ## Deploy (Vercel)
 
