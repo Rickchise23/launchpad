@@ -1,7 +1,7 @@
 'use client';
 
-import LaunchPad from '@/components/LaunchPad';
+import Launchpad from '@/components/Launchpad';
 
 export default function DashboardPage() {
-  return <LaunchPad />;
+  return <Launchpad />;
 }

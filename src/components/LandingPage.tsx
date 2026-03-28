@@ -74,17 +74,14 @@ export default function LandingPage() {
 
       {/* ─── NAV ─── */}
       <nav className="fixed top-0 left-0 right-0 z-50 px-6 py-4 flex items-center justify-between" style={{ background: "rgba(9,9,11,0.85)", backdropFilter: "blur(20px)", borderBottom: "1px solid rgba(255,255,255,0.04)" }}>
-        <div className="flex items-center gap-2">
-          <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ background: "#00e676" }}>
-            <svg viewBox="0 0 24 24" fill="#09090b" className="w-4 h-4"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 00-2.91-.09zM12 15l-3-3a22 22 0 012-3.95A12.88 12.88 0 0122 2c0 2.72-.78 7.5-6 11.95A22 22 0 0112 15z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/></svg>
-          </div>
-          <span className="text-sm font-semibold text-white tracking-wide">Launch Pad</span>
+        <div className="flex items-center">
+          <img src="/launchpad-logo-dark.svg" alt="Launchpad" className="h-9 w-auto max-h-10 object-contain object-left" />
         </div>
         <div className="hidden md:flex items-center gap-8">
           <a href="#demo" className="text-xs" style={{ color: "rgba(255,255,255,0.4)" }}>Demo</a>
           <a href="#features" className="text-xs" style={{ color: "rgba(255,255,255,0.4)" }}>Features</a>
           <a href="#pricing" className="text-xs" style={{ color: "rgba(255,255,255,0.4)" }}>Pricing</a>
-          <Link href="/sign-up" className="px-5 py-2 rounded-full text-xs font-semibold" style={{ background: "#00e676", color: "#09090b" }}>Open Launch Pad</Link>
+          <Link href="/sign-up" className="px-5 py-2 rounded-full text-xs font-semibold" style={{ background: "#00e676", color: "#09090b" }}>Open Launchpad</Link>
         </div>
       </nav>
 
@@ -156,7 +153,7 @@ export default function LandingPage() {
             <div className="flex items-center justify-between mb-6">
               <div className="flex items-center gap-3">
                 <div className="w-2 h-2 rounded-full" style={{ background: "#00e676", animation: "pulse 1.5s infinite" }}/>
-                <span className="text-xs" style={{ color: "#00e676", fontFamily: "JetBrains Mono" }}>Setting up Launch Pad...</span>
+                <span className="text-xs" style={{ color: "#00e676", fontFamily: "JetBrains Mono" }}>Setting up Launchpad...</span>
               </div>
               <span className="text-xs" style={{ color: "rgba(255,255,255,0.2)", fontFamily: "JetBrains Mono" }}>{(demoStep + 1) * 5}s / 20s</span>
             </div>
@@ -218,7 +215,7 @@ export default function LandingPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {/* Before */}
             <div className="rounded-2xl p-8" style={{ background: "rgba(255,82,82,0.03)", border: "1px solid rgba(255,82,82,0.1)" }}>
-              <div className="text-[10px] uppercase tracking-widest mb-4" style={{ color: "#ff5252", fontFamily: "JetBrains Mono" }}>Without Launch Pad</div>
+              <div className="text-[10px] uppercase tracking-widest mb-4" style={{ color: "#ff5252", fontFamily: "JetBrains Mono" }}>Without Launchpad</div>
               <div className="space-y-3">
                 {[
                   "You close the laptop. Context is gone.",
@@ -237,7 +234,7 @@ export default function LandingPage() {
             </div>
             {/* After */}
             <div className="rounded-2xl p-8" style={{ background: "rgba(0,230,118,0.03)", border: "1px solid rgba(0,230,118,0.1)" }}>
-              <div className="text-[10px] uppercase tracking-widest mb-4" style={{ color: "#00e676", fontFamily: "JetBrains Mono" }}>With Launch Pad</div>
+              <div className="text-[10px] uppercase tracking-widest mb-4" style={{ color: "#00e676", fontFamily: "JetBrains Mono" }}>With Launchpad</div>
               <div className="space-y-3">
                 {[
                   "Open one screen. Your entire project state is right there.",
@@ -263,7 +260,7 @@ export default function LandingPage() {
         <div className="max-w-4xl mx-auto grid grid-cols-3 gap-8 text-center">
           <div>
             <div className="text-4xl font-bold text-white" style={{ fontFamily: "JetBrains Mono" }}>{count.devs.toLocaleString()}+</div>
-            <div className="text-xs mt-1" style={{ color: "rgba(255,255,255,0.35)" }}>Developers using Launch Pad</div>
+            <div className="text-xs mt-1" style={{ color: "rgba(255,255,255,0.35)" }}>Developers using Launchpad</div>
           </div>
           <div>
             <div className="text-4xl font-bold text-white" style={{ fontFamily: "JetBrains Mono" }}>{count.deploys.toLocaleString()}</div>
@@ -420,7 +417,7 @@ export default function LandingPage() {
               <div className="p-8 flex flex-col justify-center order-2 md:order-1" style={{ background: "rgba(255,255,255,0.015)" }}>
                 {/* Config preview */}
                 <div className="rounded-xl p-5" style={{ background: "rgba(0,0,0,0.3)", fontFamily: "JetBrains Mono", fontSize: "11px", lineHeight: 1.8 }}>
-                  <div style={{ color: "rgba(255,255,255,0.2)" }}>{'// Generated by Launch Pad'}</div>
+                  <div style={{ color: "rgba(255,255,255,0.2)" }}>{'// Generated by Launchpad'}</div>
                   <div style={{ color: "rgba(255,255,255,0.2)" }}>{'// .cursor/mcp.json'}</div>
                   <div style={{ color: "rgba(255,255,255,0.5)" }}>{"{"}</div>
                   <div style={{ color: "rgba(255,255,255,0.5)" }}>{"  "}<span style={{ color: "#00e676" }}>"github"</span>: {"{"} <span style={{ color: "rgba(255,255,255,0.3)" }}>"token": "ghp_..."</span> {"}"}</div>
@@ -446,7 +443,7 @@ export default function LandingPage() {
                 </div>
                 <h3 className="text-3xl font-bold text-white mb-4" style={{ letterSpacing: "-0.03em", lineHeight: 1.15 }}>Your tools wake up<br/>knowing your project.</h3>
                 <p className="text-sm mb-6" style={{ color: "rgba(255,255,255,0.5)", lineHeight: 1.8 }}>
-                  MCP is how AI coding tools connect to your services. Setting it up manually means hunting for token formats, writing JSON by hand, and debugging config files. Launch Pad generates your entire MCP config with one click. Your credentials, your project context, and your agent memories. All baked in. Paste it into Cursor or Claude Code and your AI instantly knows your stack.
+                  MCP is how AI coding tools connect to your services. Setting it up manually means hunting for token formats, writing JSON by hand, and debugging config files. Launchpad generates your entire MCP config with one click. Your credentials, your project context, and your agent memories. All baked in. Paste it into Cursor or Claude Code and your AI instantly knows your stack.
                 </p>
                 <div className="space-y-3">
                   {[
@@ -476,9 +473,9 @@ export default function LandingPage() {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {[
-              { name: "Alex K.", role: "Full-stack dev", text: "I used to spend 20 minutes every morning rebuilding my mental context. Now I open Launch Pad and I'm exactly where I left off. It's like a save state for my entire workflow." },
+              { name: "Alex K.", role: "Full-stack dev", text: "I used to spend 20 minutes every morning rebuilding my mental context. Now I open Launchpad and I'm exactly where I left off. It's like a save state for my entire workflow." },
               { name: "Sarah M.", role: "Indie hacker", text: "The Agent Bay is the reason I stay. It remembers my project architecture, my naming conventions, my last 5 debugging sessions. I've never had an AI tool that keeps context like this." },
-              { name: "James T.", role: "Startup founder", text: "Our team ships on nights and weekends. Launch Pad means I can close the laptop at midnight and pick up Saturday morning without losing a single thread. That's worth 10x the price." },
+              { name: "James T.", role: "Startup founder", text: "Our team ships on nights and weekends. Launchpad means I can close the laptop at midnight and pick up Saturday morning without losing a single thread. That's worth 10x the price." },
             ].map((t, i) => (
               <div key={i} className="rounded-xl p-6" style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.05)" }}>
                 <div className="flex items-center gap-0.5 mb-3">{[1,2,3,4,5].map(s => <span key={s} style={{ color: "#00e676", fontSize: 12 }}>★</span>)}</div>
@@ -544,7 +541,7 @@ export default function LandingPage() {
           <p className="text-sm mb-8" style={{ color: "rgba(255,255,255,0.3)" }}>Join {count.devs}+ developers who never start from scratch again.</p>
           <Link href="/sign-up" className="inline-flex items-center gap-2 px-10 py-4 rounded-full text-sm font-bold transition-all"
             style={{ background: "#00e676", color: "#09090b", animation: "glow 3s ease infinite" }}>
-            Open Launch Pad. It&apos;s Free.
+            Open Launchpad. It&apos;s Free.
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="w-4 h-4"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
           </Link>
           <p className="mt-4 text-xs" style={{ color: "rgba(255,255,255,0.15)" }}>Free tier. No credit card. Set up in 20 seconds.</p>
@@ -558,7 +555,7 @@ export default function LandingPage() {
             <div className="w-6 h-6 rounded-md flex items-center justify-center" style={{ background: "#00e676" }}>
               <svg viewBox="0 0 24 24" fill="#09090b" className="w-3.5 h-3.5"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 00-2.91-.09zM12 15l-3-3a22 22 0 012-3.95A12.88 12.88 0 0122 2c0 2.72-.78 7.5-6 11.95A22 22 0 0112 15z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/></svg>
             </div>
-            <span className="text-sm font-medium" style={{ color: "rgba(255,255,255,0.4)" }}>Launch Pad</span>
+            <span className="text-sm font-medium" style={{ color: "rgba(255,255,255,0.4)" }}>Launchpad</span>
             <span className="text-xs ml-2" style={{ color: "rgba(255,255,255,0.15)" }}>by Ralli AI</span>
           </div>
           <div className="flex items-center gap-6">

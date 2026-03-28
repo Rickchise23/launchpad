@@ -1,0 +1,13 @@
+<svg width="900" height="280" viewBox="0 0 900 280" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@700');</style>
+  </defs>
+  <!-- Background -->
+  <rect width="900" height="280" rx="20" fill="#09090b"/>
+  <!-- Icon -->
+  <rect x="60" y="80" width="120" height="120" rx="24" fill="#00e676"/>
+  <path d="M95 170l35-30-35-30" stroke="#09090b" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <line x1="138" y1="170" x2="168" y2="170" stroke="#09090b" stroke-width="10" stroke-linecap="round"/>
+  <!-- Wordmark -->
+  <text x="210" y="162" font-family="'DM Sans', sans-serif" font-weight="700" font-size="72" fill="#ffffff" letter-spacing="-1.5">launchpad</text>
+</svg>

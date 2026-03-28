@@ -1,20 +1,20 @@
-# 🚀 Launch Pad
+# 🚀 Launchpad
 
 > The cockpit for builders who hate backend friction.
 > Grant once. Build forever. Get your weekends back.
 
 ## What is this?
 
-Launch Pad is a unified control panel for your entire dev stack. GitHub, Vercel, Supabase, Claude — one screen, one login, zero terminal commands.
+Launchpad is a unified control panel for your entire dev stack. GitHub, Vercel, Supabase, Claude — one screen, one login, zero terminal commands.
 
 ### Routes
 
 | Path | Purpose |
 |------|---------|
-| `/` | **Marketing landing** (full-page Claude build) **or** signed-in **Launch Pad** — see `HomeGate` + `HomeAuthenticated` |
+| `/` | **Marketing landing** (full-page Claude build) **or** signed-in **Launchpad** — see `HomeGate` + `HomeAuthenticated` |
 | `/pricing` | Short pricing page (optional; landing also has `#pricing`) |
 | `/sign-in`, `/sign-up` | [Clerk](https://clerk.com) auth (dark-themed); CTAs use `/sign-up` |
-| `/app` | **Dashboard** — same `LaunchPad` UI (still protected by middleware when Clerk is on) |
+| `/app` | **Dashboard** — same `Launchpad` UI (still protected by middleware when Clerk is on) |
 
 ### Auth gating (Clerk)
 
@@ -72,7 +72,7 @@ Without Clerk keys in `.env.local`, `/` shows the landing only (no `useUser`); u
 3. **Required for a gated product:** `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY`, `CLERK_SECRET_KEY` (from [Clerk dashboard](https://dashboard.clerk.com) → API Keys).
 4. Set **`NEXT_PUBLIC_SITE_URL`** to your canonical URL (e.g. `https://uselaunchpad.dev`) so Open Graph, `robots.txt`, and `sitemap.xml` use the right host.
 5. **Stripe:** connect Stripe to Clerk in the Clerk dashboard when you enable billing; use `STRIPE_PRICE_ID` / `STRIPE_SECRET_KEY` as in `.env.example` for server/webhook code you add later.
-6. Supabase keys in `.env.example` are for Launch Pad’s **own** backend vault (Phase B), not required to run the dashboard prototype.
+6. Supabase keys in `.env.example` are for Launchpad’s **own** backend vault (Phase B), not required to run the dashboard prototype.
 
 ## Security note
 

@@ -3,7 +3,7 @@ import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'Pricing',
-  description: 'Launch Pad — Free tier and Pro. Stripe billing via Clerk.',
+  description: 'Launchpad — Free tier and Pro. Stripe billing via Clerk.',
 };
 
 const authDisabled =
@@ -18,7 +18,7 @@ export default function PricingPage() {
     <div className="min-h-screen flex flex-col" style={{ background: '#09090b' }}>
       <header className="flex items-center justify-between px-6 py-4 border-b border-white/[0.06]">
         <Link href="/" className="text-sm font-bold tracking-tight text-white">
-          Launch Pad
+          Launchpad
         </Link>
         <nav className="flex items-center gap-4 text-xs">
           <Link href="/" className="text-white/50 hover:text-white transition-colors">

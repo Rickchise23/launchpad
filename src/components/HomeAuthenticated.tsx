@@ -2,7 +2,7 @@
 
 import { useUser } from '@clerk/nextjs';
 import LandingPage from '@/components/LandingPage';
-import LaunchPad from '@/components/LaunchPad';
+import Launchpad from '@/components/Launchpad';
 
 export default function HomeAuthenticated() {
   const { isSignedIn, isLoaded } = useUser();
@@ -18,5 +18,5 @@ export default function HomeAuthenticated() {
     );
   }
 
-  return isSignedIn ? <LaunchPad /> : <LandingPage />;
+  return isSignedIn ? <Launchpad /> : <LandingPage />;
 }

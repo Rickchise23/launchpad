@@ -1,4 +1,4 @@
-# Launch Pad — Master Project Plan
+# Launchpad — Master Project Plan
 
 > **Last updated:** March 24, 2026
 > **Status:** Prototype complete. All 4 integrations wired. Ready for production build.
@@ -41,7 +41,7 @@ Founders, product people, and ops-minded builders who:
 
 > "Grant once, build forever."
 
-Every tool in the stack (Claude, Cursor, Vercel, Supabase, GitHub) has its own auth model, token lifetime, and permission scope. Launch Pad is the **permission orchestration layer** — you authenticate once per service, the UI handles everything else.
+Every tool in the stack (Claude, Cursor, Vercel, Supabase, GitHub) has its own auth model, token lifetime, and permission scope. Launchpad is the **permission orchestration layer** — you authenticate once per service, the UI handles everything else.
 
 You should never need to:
 
@@ -200,14 +200,14 @@ launch-pad/
 - [ ] Add Clerk middleware to Next.js
 - [ ] Login/signup pages (Clerk provides pre-built components)
 - [ ] Create Stripe account
-- [ ] Set up Stripe product: Launch Pad Pro @ $9.99/mo
+- [ ] Set up Stripe product: Launchpad Pro @ $9.99/mo
 - [ ] Wire Clerk ↔ Stripe (native integration, minimal glue code)
 - [ ] Build billing page — current plan, upgrade/downgrade, cancel
 - [ ] Free tier gating: 1 project, read-only integrations
 - [ ] Pro tier: unlimited projects, Agent Bay, MCP generator, memory
 - [ ] Move vault storage from browser to encrypted Supabase Vault (user-scoped)
 - [ ] Move agent memory to Supabase (user-scoped)
-- [ ] Create Supabase project for Launch Pad itself (separate from user projects)
+- [ ] Create Supabase project for Launchpad itself (separate from user projects)
 
 ### Phase C — Landing Page (Week 3)
 
@@ -257,7 +257,7 @@ Build a single-page marketing site. This is what people see before they sign up.
 
 - [ ] Project Scaffolder: "New Project" creates GitHub repo + Vercel project + Supabase instance + links them + pushes env vars in one flow
 - [ ] Cross-Service Wiring Detector: "Your Vercel project is missing SUPABASE_URL" — flags mismatches and offers one-click fixes
-- [ ] .env Sync Engine: define what env vars a project needs once, Launch Pad checks all services
+- [ ] .env Sync Engine: define what env vars a project needs once, Launchpad checks all services
 - [ ] Incident Timeline: correlate failed deploys with recent commits and DB changes
 - [ ] Deploy Pipeline Builder: visual flow for push → test → preview → approve → production
 
@@ -300,13 +300,13 @@ Build a single-page marketing site. This is what people see before they sign up.
 
 ### 2. Stripe Account (~20 min)
 - Go to stripe.com → Create account
-- Create a product: "Launch Pad Pro" @ $9.99/month
+- Create a product: "Launchpad Pro" @ $9.99/month
 - Connect to Clerk (native integration in Clerk dashboard)
 - Get your price ID for the subscription
 
-### 3. Supabase Project for Launch Pad (~10 min)
+### 3. Supabase Project for Launchpad (~10 min)
 - Go to supabase.com → New Project (name it "launch-pad-prod")
-- This is separate from any project you build WITH Launch Pad
+- This is separate from any project you build WITH Launchpad
 - Will store: user vault (encrypted), agent memories, session logs
 - Tables needed: `user_vault`, `agent_memories`, `agent_sessions`, `audit_log`
 
@@ -346,7 +346,7 @@ Build a single-page marketing site. This is what people see before they sign up.
 >
 > I've missed entire weekends with my family clicking through backend mess.
 >
-> So I built Launch Pad. One screen. All your services. Grant permissions once, and let your AI agents work. The agent even remembers what it learned last time.
+> So I built Launchpad. One screen. All your services. Grant permissions once, and let your AI agents work. The agent even remembers what it learned last time.
 >
 > I built it for me. Turns out a lot of people have the same problem.
 

@@ -2,11 +2,11 @@
 
 ## What Changed
 
-A new **Domains** panel was added to Launch Pad. This is the 9th panel in the sidebar, sitting between "MCP Config" and "Vault".
+A new **Domains** panel was added to Launchpad. This is the 9th panel in the sidebar, sitting between "MCP Config" and "Vault".
 
 ## Files Modified
 
-**`src/components/LaunchPad.tsx`** — the main (and only) component file. Changes:
+**`src/components/Launchpad.tsx`** — the main (and only) component file. Changes:
 
 1. **New icons added** at the top of the Icons object: `Link`, `Download`, `Code`, `DollarSign`, `Clock`, `Heart`, `TrendingUp`, `AlertCircle`, `Brain`, `Database`, `Send`
 
@@ -37,9 +37,9 @@ A new **Domains** panel was added to Launch Pad. This is the 9th panel in the si
 
 ## How to Deploy This Update
 
-The updated `LaunchPad.tsx` in the zip replaces the existing one. No new dependencies, no new files, no env vars needed. Just swap the file and redeploy:
+The updated `Launchpad.tsx` in the zip replaces the existing one. No new dependencies, no new files, no env vars needed. Just swap the file and redeploy:
 
-1. Replace `src/components/LaunchPad.tsx` with the new version from the zip
+1. Replace `src/components/Launchpad.tsx` with the new version from the zip
 2. Commit and push — Vercel auto-deploys
 
 ## What Else Changed in This Session (Besides Domains)

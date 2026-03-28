@@ -76,7 +76,7 @@ const loadVault = async () => { try { const r = await window.storage.get(VAULT_K
 const saveVault = async (data) => { try { await window.storage.set(VAULT_KEY, JSON.stringify(data)); } catch(e) { console.error(e); } };
 
 // ─── MAIN ───
-export default function LaunchPad() {
+export default function Launchpad() {
   const [activeView, setActiveView] = useState("dashboard");
   const [mounted, setMounted] = useState(false);
   const [showSetup, setShowSetup] = useState(false);
@@ -154,7 +154,7 @@ export default function LaunchPad() {
   const [agentTaskInput, setAgentTaskInput] = useState("");
   const [agentRunning, setAgentRunning] = useState(false);
   const [agentLog, setAgentLog] = useState([]);
-  const [agentSelectedProject, setAgentSelectedProject] = useState("Launch Pad");
+  const [agentSelectedProject, setAgentSelectedProject] = useState("Launchpad");
   const [agentPermissions, setAgentPermissions] = useState({ pushCode: true, createPR: true, deploy: false, writeDB: false, runMigrations: false });
 
   // Setup form state
@@ -504,7 +504,7 @@ export default function LaunchPad() {
     addLog("task", `Task: "${agentTaskInput}"`);
 
     try {
-      const systemPrompt = `You are an AI agent operating within Launch Pad, a developer cockpit tool. You are working on the project "${agentSelectedProject}".
+      const systemPrompt = `You are an AI agent operating within Launchpad, a developer cockpit tool. You are working on the project "${agentSelectedProject}".
 Granted permissions: ${permList}.
 Your job: Complete the user's task, explain what you'd do step by step, and generate a concise memory entry summarizing what you learned about this project.
 ${memoryContext}
@@ -850,7 +850,7 @@ At the end of your response, include a line starting with "MEMORY:" followed by 
       <div className="flex flex-col items-center justify-center py-20" style={{ animation: "fadeSlideUp 0.5s ease" }}>
         <div className="p-5 rounded-3xl mb-6" style={{ background: c.bg, border: `1px solid ${c.border}`, color: c.text }}><Icons.Vercel /></div>
         <h2 className="text-xl font-bold text-white mb-2">Connect Vercel</h2>
-        <p className="text-sm mb-6 max-w-md text-center" style={{ color: "rgba(255,255,255,0.4)" }}>Add your Vercel token to manage projects, env vars, deployments, and domains — all from Launch Pad.</p>
+        <p className="text-sm mb-6 max-w-md text-center" style={{ color: "rgba(255,255,255,0.4)" }}>Add your Vercel token to manage projects, env vars, deployments, and domains — all from Launchpad.</p>
         <button onClick={() => setShowSetup(true)} className="flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm" style={{ background: "linear-gradient(135deg, #fff, #ccc)", color: "#0a0a0a", boxShadow: "0 0 25px rgba(255,255,255,0.15)" }}>
           <Icons.Key /> Add Vercel Token
         </button>
@@ -1557,7 +1557,7 @@ At the end of your response, include a line starting with "MEMORY:" followed by 
     useEffect(() => { logEndRef.current?.scrollIntoView({ behavior: "smooth" }); }, [agentLog]);
     const projectMemories = agentMemories.filter(m => m.project === agentSelectedProject);
     const projectSessions = agentSessions.filter(s => s.project === agentSelectedProject);
-    const projectOptions = ["Launch Pad", ...ghRepos.slice(0, 10).map(r => r.name), ...vcProjects.slice(0, 5).map(p => p.name)].filter((v, i, a) => a.indexOf(v) === i);
+    const projectOptions = ["Launchpad", ...ghRepos.slice(0, 10).map(r => r.name), ...vcProjects.slice(0, 5).map(p => p.name)].filter((v, i, a) => a.indexOf(v) === i);
 
     return (
       <div className="space-y-5" style={{ animation: "fadeSlideUp 0.4s ease" }}>
@@ -1936,14 +1936,14 @@ At the end of your response, include a line starting with "MEMORY:" followed by 
 
   // ─── MCP CONFIG GENERATOR ───
   const MCPView = () => {
-    const [mcpProject, setMcpProject] = useState("Launch Pad");
+    const [mcpProject, setMcpProject] = useState("Launchpad");
     const [mcpServices, setMcpServices] = useState({ github: true, supabase: true, filesystem: true });
     const [mcpScope, setMcpScope] = useState({ readOnly: false, timeboxMinutes: 60 });
     const [mcpGenerated, setMcpGenerated] = useState(null);
     const [mcpCopied, setMcpCopied] = useState(false);
     const [mcpFormat, setMcpFormat] = useState("claude-code");
 
-    const projectOptions = ["Launch Pad", ...ghRepos.slice(0, 15).map(r => r.name), ...vcProjects.slice(0, 5).map(p => p.name)].filter((v, i, a) => a.indexOf(v) === i);
+    const projectOptions = ["Launchpad", ...ghRepos.slice(0, 15).map(r => r.name), ...vcProjects.slice(0, 5).map(p => p.name)].filter((v, i, a) => a.indexOf(v) === i);
 
     // Find the matching GitHub repo for selected project
     const matchedRepo = ghRepos.find(r => r.name === mcpProject);
@@ -2024,7 +2024,7 @@ At the end of your response, include a line starting with "MEMORY:" followed by 
     };
 
     const generateEnvFile = () => {
-      let env = `# Launch Pad — Generated .env for ${mcpProject}\n# ${new Date().toISOString()}\n\n`;
+      let env = `# Launchpad — Generated .env for ${mcpProject}\n# ${new Date().toISOString()}\n\n`;
       if (vault.github) env += `GITHUB_PERSONAL_ACCESS_TOKEN=${vault.github}\n`;
       if (vault.supabase_url) env += `NEXT_PUBLIC_SUPABASE_URL=${vault.supabase_url}\n`;
       if (vault.supabase_anon) env += `NEXT_PUBLIC_SUPABASE_ANON_KEY=${vault.supabase_anon}\n`;
@@ -2308,7 +2308,7 @@ At the end of your response, include a line starting with "MEMORY:" followed by 
     return (
       <div className="space-y-5" style={{ animation: "fadeSlideUp 0.4s ease" }}>
         <div><h2 className="text-xl font-bold text-white">Domains</h2>
-          <p className="text-xs mt-1" style={{ color: "rgba(255,255,255,0.35)" }}>Search, check availability, buy, and connect to Vercel — all without leaving Launch Pad.</p></div>
+          <p className="text-xs mt-1" style={{ color: "rgba(255,255,255,0.35)" }}>Search, check availability, buy, and connect to Vercel — all without leaving Launchpad.</p></div>
 
         {/* Search */}
         <div className="flex gap-3">
@@ -2508,9 +2508,8 @@ At the end of your response, include a line starting with "MEMORY:" followed by 
       {/* SIDEBAR */}
       <div className="relative flex flex-col h-full" style={{ width: 240, background: "rgba(255,255,255,0.015)", borderRight: "1px solid rgba(255,255,255,0.06)", flexShrink: 0 }}>
         <div className="sidebar-glow" />
-        <div className="flex items-center gap-3 px-4 py-5 relative z-10" style={{ borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
-          <div className="w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: "linear-gradient(135deg, #00e676, #00c853)", boxShadow: "0 0 20px rgba(0,230,118,0.25)" }}><Icons.Rocket /></div>
-          <div><div className="text-sm font-bold text-white tracking-wide">LAUNCH</div><div className="text-[10px] font-semibold tracking-[0.2em]" style={{ color: "#00e676" }}>PAD</div></div>
+        <div className="flex items-center px-4 py-4 relative z-10" style={{ borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
+          <img src="/launchpad-logo-dark.svg" alt="Launchpad" className="h-9 w-auto max-w-full object-contain object-left" />
         </div>
         <nav className="flex-1 px-3 py-3 space-y-1 relative z-10 overflow-y-auto">
           {navItems.map(item => {

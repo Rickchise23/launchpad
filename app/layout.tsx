@@ -11,7 +11,7 @@ const noClerkKey = !process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY?.trim();
 const skipClerk = authDisabled || noClerkKey;
 
 const siteUrl = getSiteUrl();
-const title = 'Launch Pad';
+const title = 'Launchpad';
 const description =
   'Unified control panel for GitHub, Vercel, Supabase, and Claude—repos, deploys, env vars, data, chat, agent tasks, and MCP configs in one dark UI.';
 

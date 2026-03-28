@@ -1,8 +1,8 @@
-# Launch Pad — Cursor Rules
+# Launchpad — Cursor Rules
 
 ## What This Project Is
 
-Launch Pad is a unified developer cockpit that manages GitHub, Vercel, Supabase, and Claude/Anthropic from one dark-mode UI. It eliminates backend friction for builders who hate terminals. Users authenticate once per service, and the app handles tokens, permissions, env vars, and agent orchestration.
+Launchpad is a unified developer cockpit that manages GitHub, Vercel, Supabase, and Claude/Anthropic from one dark-mode UI. It eliminates backend friction for builders who hate terminals. Users authenticate once per service, and the app handles tokens, permissions, env vars, and agent orchestration.
 
 ## The Stack
 
@@ -40,7 +40,7 @@ Launch Pad is a unified developer cockpit that manages GitHub, Vercel, Supabase,
 
 ## Component Structure
 
-Currently the app lives in a single file: `src/components/LaunchPad.tsx` (2,300 lines). When splitting into smaller components, follow this structure:
+Currently the app lives in a single file: `src/components/Launchpad.tsx` (2,300 lines). When splitting into smaller components, follow this structure:
 
 ```
 src/components/
