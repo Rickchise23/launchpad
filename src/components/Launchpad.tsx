@@ -2509,7 +2509,7 @@ At the end of your response, include a line starting with "MEMORY:" followed by 
       <div className="relative flex flex-col h-full" style={{ width: 240, background: "rgba(255,255,255,0.015)", borderRight: "1px solid rgba(255,255,255,0.06)", flexShrink: 0 }}>
         <div className="sidebar-glow" />
         <div className="flex items-center px-4 py-4 relative z-10" style={{ borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
-          <img src="/launchpad-logo-dark.svg" alt="Launchpad" className="h-9 w-auto max-w-full object-contain object-left" />
+          <img src="/launchpad-logo-dark.svg" alt="Launchpad" className="h-12 sm:h-14 w-auto max-w-full object-contain object-left" />
         </div>
         <nav className="flex-1 px-3 py-3 space-y-1 relative z-10 overflow-y-auto">
           {navItems.map(item => {

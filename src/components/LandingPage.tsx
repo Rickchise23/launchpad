@@ -75,7 +75,7 @@ export default function LandingPage() {
       {/* ─── NAV ─── */}
       <nav className="fixed top-0 left-0 right-0 z-50 px-6 py-4 flex items-center justify-between" style={{ background: "rgba(9,9,11,0.85)", backdropFilter: "blur(20px)", borderBottom: "1px solid rgba(255,255,255,0.04)" }}>
         <div className="flex items-center">
-          <img src="/launchpad-logo-dark.svg" alt="Launchpad" className="h-9 w-auto max-h-10 object-contain object-left" />
+          <img src="/launchpad-logo-dark.svg" alt="Launchpad" className="h-12 w-auto sm:h-14 md:h-16 object-contain object-left" />
         </div>
         <div className="hidden md:flex items-center gap-8">
           <a href="#demo" className="text-xs" style={{ color: "rgba(255,255,255,0.4)" }}>Demo</a>
