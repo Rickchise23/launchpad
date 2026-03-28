@@ -112,15 +112,18 @@ export default function LandingPage() {
             <p className="text-sm" style={{ color: "rgba(255,255,255,0.35)" }}>^ Every time you switch tabs, you lose context. Every time you close the laptop, you start over.</p>
           </div>
 
-          <h1 className="text-5xl md:text-7xl font-bold mb-6 text-white" style={{ letterSpacing: "-0.04em", lineHeight: 1.05, animation: "fadeUp 0.8s ease 0.4s both" }}>
-            Your project state.<br/>Saved. Always.
+          <h1 className="text-5xl md:text-7xl font-bold mb-5 text-white" style={{ letterSpacing: "-0.04em", lineHeight: 1.05, animation: "fadeUp 0.8s ease 0.4s both" }}>
+            Stop rebuilding context.
           </h1>
-          <p className="text-xl md:text-2xl mb-4 font-medium" style={{ color: "rgba(255,255,255,0.7)", animation: "fadeUp 0.8s ease 0.5s both", letterSpacing: "-0.02em" }}>
-            Stop rebuilding context. Your AI remembers everything.
+          <p className="text-3xl md:text-5xl font-bold mb-6 text-white max-w-3xl mx-auto" style={{ letterSpacing: "-0.04em", lineHeight: 1.12, animation: "fadeUp 0.8s ease 0.45s both" }}>
+            Your project state.<br/>Saved. Always.
+          </p>
+          <p className="text-xl md:text-2xl mb-4 font-medium" style={{ color: "rgba(255,255,255,0.75)", animation: "fadeUp 0.8s ease 0.5s both", letterSpacing: "-0.02em" }}>
+            The memory layer for your dev workflow.
           </p>
 
           <p className="text-lg mb-10 max-w-2xl mx-auto" style={{ color: "rgba(255,255,255,0.4)", lineHeight: 1.7, animation: "fadeUp 0.8s ease 0.6s both" }}>
-            GitHub. Vercel. Supabase. Claude. One cockpit that saves your entire project state. Close the laptop Friday. Open it Monday. Pick up exactly where you left off.
+            GitHub. Vercel. Supabase. Claude. One cockpit that saves your entire project state—freedom from resetting your brain every day. Close the laptop Friday. Open it Monday. Pick up exactly where you left off.
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4" style={{ animation: "fadeUp 0.8s ease 0.8s both" }}>
@@ -279,7 +282,7 @@ export default function LandingPage() {
           <div className="text-center mb-16">
             <span className="text-[10px] uppercase tracking-widest" style={{ color: "#00e676", fontFamily: "JetBrains Mono" }}>THE PANELS</span>
             <h2 className="text-3xl md:text-5xl font-bold text-white mt-3 mb-4" style={{ letterSpacing: "-0.03em" }}>Your stack. Your state. One screen.</h2>
-            <p className="text-sm" style={{ color: "rgba(255,255,255,0.4)" }}>Everything you need to ship. Nothing you need to reconstruct.</p>
+            <p className="text-sm" style={{ color: "rgba(255,255,255,0.4)" }}>Everything in one place. Nothing lost.</p>
           </div>
 
           {/* Feature tabs */}
@@ -355,9 +358,9 @@ export default function LandingPage() {
                   <span className="text-2xl">🧠</span>
                   <span className="text-[10px] uppercase tracking-widest" style={{ color: "#00e676", fontFamily: "JetBrains Mono" }}>Agent Bay</span>
                 </div>
-                <h3 className="text-3xl font-bold text-white mb-4" style={{ letterSpacing: "-0.03em", lineHeight: 1.15 }}>An AI that remembers<br/>your entire project.</h3>
+                <h3 className="text-3xl font-bold text-white mb-4" style={{ letterSpacing: "-0.03em", lineHeight: 1.15 }}>Every AI forgets.<br/>This one doesn&apos;t.</h3>
                 <p className="text-sm mb-6" style={{ color: "rgba(255,255,255,0.5)", lineHeight: 1.8 }}>
-                  Most AI tools forget you the second the conversation ends. Agent Bay doesn't. It builds a persistent memory layer across every session. Your architecture decisions, your naming conventions, your debugging history, your preferences. It learns how YOU work and gets better every time you use it.
+                  Most AI tools forget you the second the conversation ends. Agent Bay doesn&apos;t. It builds a persistent memory layer across every session—architecture, naming, debugging history, preferences. It learns how you work and gets sharper every time you return.
                 </p>
                 <div className="space-y-3">
                   {[
@@ -380,11 +383,11 @@ export default function LandingPage() {
                   <div className="flex justify-end"><div className="px-4 py-2.5 rounded-xl rounded-br-sm text-sm" style={{ background: "rgba(0,230,118,0.08)", color: "rgba(255,255,255,0.7)", maxWidth: "85%" }}>Deploy the auth update to Vercel and run the migration on Supabase</div></div>
                   <div className="flex justify-start"><div className="px-4 py-2.5 rounded-xl rounded-bl-sm text-sm" style={{ background: "rgba(255,255,255,0.04)", color: "rgba(255,255,255,0.5)", maxWidth: "85%" }}>On it. I see from our last session you're using Clerk for auth and your Supabase migration is in /supabase/migrations/004_add_user_roles.sql. Deploying to your "launchpad" Vercel project now and running the migration against your production database.</div></div>
                   <div className="flex justify-end"><div className="px-4 py-2.5 rounded-xl rounded-br-sm text-sm" style={{ background: "rgba(0,230,118,0.08)", color: "rgba(255,255,255,0.7)", maxWidth: "85%" }}>How did you know about the migration file?</div></div>
-                  <div className="flex justify-start"><div className="px-4 py-2.5 rounded-xl rounded-bl-sm text-sm" style={{ background: "rgba(255,255,255,0.04)", color: "rgba(255,255,255,0.5)", maxWidth: "85%" }}>You mentioned it on Tuesday. I saved it as a memory. I have 47 memories about this project so far.</div></div>
+                  <div className="flex justify-start"><div className="px-4 py-2.5 rounded-xl rounded-bl-sm text-sm" style={{ background: "rgba(255,255,255,0.04)", color: "rgba(255,255,255,0.5)", maxWidth: "85%" }}>You mentioned this Tuesday. I saved it.</div></div>
                 </div>
                 <div className="flex items-center gap-2 mt-6 pt-4" style={{ borderTop: "1px solid rgba(255,255,255,0.04)" }}>
                   <div className="w-1.5 h-1.5 rounded-full" style={{ background: "#00e676" }}/>
-                  <span className="text-[10px]" style={{ color: "rgba(255,255,255,0.25)", fontFamily: "JetBrains Mono" }}>47 memories / 12 sessions / Learning continuously</span>
+                  <span className="text-[10px]" style={{ color: "rgba(255,255,255,0.25)", fontFamily: "JetBrains Mono" }}>47 decisions remembered · 12 sessions · Learning continuously</span>
                 </div>
                 {/* Memory store preview */}
                 <div className="mt-4 rounded-lg p-3 space-y-1.5" style={{ background: "rgba(0,0,0,0.2)", border: "1px solid rgba(255,255,255,0.03)" }}>
@@ -441,9 +444,9 @@ export default function LandingPage() {
                   <span className="text-2xl">⚙️</span>
                   <span className="text-[10px] uppercase tracking-widest" style={{ color: "#00e676", fontFamily: "JetBrains Mono" }}>MCP Config Generator</span>
                 </div>
-                <h3 className="text-3xl font-bold text-white mb-4" style={{ letterSpacing: "-0.03em", lineHeight: 1.15 }}>Your tools wake up<br/>knowing your project.</h3>
+                <h3 className="text-3xl font-bold text-white mb-4" style={{ letterSpacing: "-0.03em", lineHeight: 1.15 }}>Your tools already know<br/>your project.</h3>
                 <p className="text-sm mb-6" style={{ color: "rgba(255,255,255,0.5)", lineHeight: 1.8 }}>
-                  MCP is how AI coding tools connect to your services. Setting it up manually means hunting for token formats, writing JSON by hand, and debugging config files. Launchpad generates your entire MCP config with one click. Your credentials, your project context, and your agent memories. All baked in. Paste it into Cursor or Claude Code and your AI instantly knows your stack.
+                  MCP is the wiring that lets Cursor and Claude Code talk to GitHub, Vercel, and Supabase. Doing it by hand means token formats, JSON, and broken configs. Launchpad generates the whole thing in one click—credentials, context, and Agent Bay memories embedded. Paste, done. Your stack shows up before you type a word.
                 </p>
                 <div className="space-y-3">
                   {[
@@ -469,13 +472,13 @@ export default function LandingPage() {
       <section className="py-24 px-6" style={{ borderTop: "1px solid rgba(255,255,255,0.03)" }}>
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-white mb-3" style={{ letterSpacing: "-0.03em" }}>Builders who stopped losing context.</h2>
+            <h2 className="text-3xl font-bold text-white mb-3" style={{ letterSpacing: "-0.03em" }}>Builders who changed how they work.</h2>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {[
-              { name: "Alex K.", role: "Full-stack dev", text: "I used to spend 20 minutes every morning rebuilding my mental context. Now I open Launchpad and I'm exactly where I left off. It's like a save state for my entire workflow." },
-              { name: "Sarah M.", role: "Indie hacker", text: "The Agent Bay is the reason I stay. It remembers my project architecture, my naming conventions, my last 5 debugging sessions. I've never had an AI tool that keeps context like this." },
-              { name: "James T.", role: "Startup founder", text: "Our team ships on nights and weekends. Launchpad means I can close the laptop at midnight and pick up Saturday morning without losing a single thread. That's worth 10x the price." },
+              { name: "Alex K.", role: "Full-stack dev", text: "I didn't realize how much time I was losing until Launchpad removed it. It changed how I work—I open one screen and I'm back in the flow, not rebuilding context from scratch." },
+              { name: "Sarah M.", role: "Indie hacker", text: "I thought I was bad at focus. Turns out I was tired of re-explaining my stack to every new chat. Agent Bay fixed that. This is the first tool that feels like it actually knows my project." },
+              { name: "James T.", role: "Startup founder", text: "We ship nights and weekends. I used to lose half an hour just remembering where we left off. Now I close the laptop at midnight and pick up Saturday without losing a thread—that's not 'helpful,' it's a different job." },
             ].map((t, i) => (
               <div key={i} className="rounded-xl p-6" style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.05)" }}>
                 <div className="flex items-center gap-0.5 mb-3">{[1,2,3,4,5].map(s => <span key={s} style={{ color: "#00e676", fontSize: 12 }}>★</span>)}</div>
@@ -517,7 +520,8 @@ export default function LandingPage() {
                 <span className="text-3xl font-bold text-white">$9.99</span>
                 <span className="text-sm" style={{ color: "rgba(255,255,255,0.3)" }}>/month</span>
               </div>
-              <div className="text-xs mb-6" style={{ color: "rgba(255,255,255,0.3)" }}>Cancel anytime. Never rebuild context again.</div>
+              <div className="text-sm font-semibold mb-1" style={{ color: "#00e676" }}>Never rebuild context again.</div>
+              <div className="text-xs mb-6" style={{ color: "rgba(255,255,255,0.3)" }}>Cancel anytime.</div>
               <div className="space-y-2 mb-6">
                 {["Unlimited projects", "All 9 panels", "Agent Bay with unlimited memory", "Full session history and audit trail", "MCP Config Generator", "Unlimited Prompt Vault", "Domain search and connect", "Priority support", "Early access to new features"].map((f, i) => (
                   <div key={i} className="flex items-center gap-2 text-sm" style={{ color: "rgba(255,255,255,0.6)" }}>
@@ -537,7 +541,7 @@ export default function LandingPage() {
           <h2 className="text-3xl md:text-5xl font-bold text-white mb-4" style={{ letterSpacing: "-0.03em" }}>
             Stop starting over.
           </h2>
-          <p className="text-lg mb-2" style={{ color: "rgba(255,255,255,0.5)" }}>Your projects deserve to be finished.</p>
+          <p className="text-lg mb-2 max-w-xl mx-auto" style={{ color: "rgba(255,255,255,0.5)" }}>The memory layer for your dev workflow—saved state, not another dashboard.</p>
           <p className="text-sm mb-8" style={{ color: "rgba(255,255,255,0.3)" }}>Join {count.devs}+ developers who never start from scratch again.</p>
           <Link href="/sign-up" className="inline-flex items-center gap-2 px-10 py-4 rounded-full text-sm font-bold transition-all"
             style={{ background: "#00e676", color: "#09090b", animation: "glow 3s ease infinite" }}>
